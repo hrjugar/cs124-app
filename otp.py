@@ -86,7 +86,7 @@ class TOTP(OTP):
         super().__init__(s)
         self.interval = interval
     
-    def verify(self, otp, valid_window = 1):
+    def verify(self, otp, valid_window = 5):
         curr_time = datetime.datetime.now()
 
         if valid_window:

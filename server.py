@@ -8,7 +8,7 @@ if __name__ == "__main__":
     secret = None
     s = socket.socket()
     s.bind((socket.gethostname(), PORT))
-    s.listen(5)
+    s.listen()
 
     while True:
         client_socket, address = s.accept()
@@ -19,6 +19,7 @@ if __name__ == "__main__":
             secret = data[1]
         elif instruction == Instruction.VERIFY:
             input_code = data[1]
+            print(f"Password is supposed to be {TOTP(secret).now()}")
             verified = TOTP(secret).verify(input_code)
             client_socket.send(b'1' if verified else b'')
 
