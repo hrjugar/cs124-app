@@ -11,14 +11,7 @@ from tkinter import font
 from tkinter import messagebox
 
 
-def send_email_code(email, code):
-    try:
-        sock = socket.create_connection(('www.google.com', 80))
-        if sock is not None:
-            sock.close()
-    except OSError:
-        return ErrorMessage.NO_CONNECTION
-    
+def send_email_code(email, code):    
     message = EmailMessage()
     message["From"] = SERVER_ACCOUNT_EMAIL
     message["To"] = email
@@ -110,6 +103,14 @@ class LoginPage(Frame):
         if not re.fullmatch("[^@]+@[^@]+\.[^@]+", email):
             messagebox.showerror("Error", ErrorMessage.INVALID_INPUT)
             return
+        
+        try:
+            sock = socket.create_connection(('www.google.com', 80))
+            if sock is not None:
+                sock.close()
+        except OSError:
+            messagebox.showerror("Error", ErrorMessage.NO_CONNECTION)
+            return 
         
         self.master.secret = OTP.generate_secret()
         with socket.socket() as s:
